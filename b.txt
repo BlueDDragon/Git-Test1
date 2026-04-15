@@ -1,3 +1,7 @@
 b 파일 생성2
 dev에서 수정2
+<<<<<<< HEAD
 dev에서 수정2-2
+=======
+master에서 수정2
+>>>>>>> 01b8e2e (modify b.txt on master)
