@@ -1,101 +1,271 @@
-# Git-Test1
+# 📘 Git-Test1
 
-### Git
-- 버전관리, 형상관리
-- SCM(Source Code Management)
+> **클라우드 기반 생성형 AI 활용 웹개발 실무 프로젝트** — Git 학습 및 실습 레포지토리
 
-### SVN(Subversion) vs Git
-- Git: 로컬, 원격 둘 다 저장소를 따로 둠
-- SVN: 원격에만 저장소를 둠 (인터넷 서버가 안되면 먹통)
+---
 
-### 초기 명령어
-- 사용자 이름 설정 : git config --global user.name "사용자 이름"
-- 사용자 이메일 설정 : git config --global user.email "이메일 주소"
-- 맥사용시 파일명이 한글일경우 인식문제 해결 : git config --global core.precomposeunicode true
-- git에서 한글 깨짐이 발생하는 경우 : git config --global core.quotepath false
-- config 내용 확인 : git config --list
-- 현재 폴더를 Git 로컬 저장소로 생성 : git init
+## 📌 프로젝트 개요
 
-### 파일의 상태
-- 현재 저장소의 상태 확인 : git status
-    - Untracked : 파일 생성, 삭제시 변동
-    - Unmodified : 수정하지 않은 파일
-    - Modified : 수정된 파일
-    - Staged : git add로 등록한 파일
+이 레포지토리는 Git의 핵심 개념과 명령어를 학습하고 실습하기 위해 만들어진 저장소입니다.  
+버전 관리의 기초부터 브랜치 전략, 원격 저장소 연동까지 다양한 Git 워크플로우를 다룹니다.
 
-### 파일등록
-- 특정 파일을 staging area에 추가 : git add "파일명"
-- 현재 폴더의 모든 파일 추가 : git add -A / git add .
+---
 
-### 커밋 Commit
-- 저장소의 변경 내용을 특정 시점(branch)에 저장하는 행위
-- 또는 저장된 덩어리를 의미하는 말
-- 현재 폴더의 변경사항을 확인 : git status
-- 현재 상태에서 커밋 생성 : git commit -m "commit message"
-- add와 commit을 동시에 : git commit -am "commit message" (Untracked상태 파일이 없을 때만)
-- 현재 저장소의 커밋 내역을 확인 : git log / git log --oneline / git log --oneline --graph
+## 🗂️ 목차
 
-### Commit간 이동
-- 원하는 커밋으로 이동 : git checkout 6ef2a23(commit id 앞7자리)
-- 최신 커밋으로 이동 : git checkout branch_name
+- [Git이란?](#-git이란)
+- [SVN vs Git](#-svn-vs-git)
+- [초기 설정](#-초기-설정)
+- [파일 상태](#-파일-상태)
+- [파일 등록 및 커밋](#-파일-등록--커밋)
+- [커밋 이동 및 되돌리기](#-커밋-이동--되돌리기)
+- [브랜치 관리](#-브랜치-관리)
+- [Merge & Rebase](#-merge--rebase)
+- [원격 저장소](#-원격-저장소)
+- [충돌(Conflict) 대처](#-충돌conflict-대처)
+- [고급 기능](#-고급-기능)
+- [Git Ignore](#-git-ignore)
+- [GUI 툴](#-gui-툴)
+- [터미널 기본 명령어](#-터미널-기본-명령어)
 
-### Commit 되돌리기
-- 해당 id의 커밋으로 되돌림 해당 커밋이후의 커밋은 삭제됨 : git reset --hard 6ef2a23
-- 해당 id의 커밋만 지우고 나머지의 커밋을 이어서 유지 : git revert 6ef2a23
+---
 
-### Branch
-- branch 목록 확인 : git branch
-- 새로운 branch 생성 : git branch branch_name
-- 작업 branch 변경 : git checkout branch_name / git switch branch_name
-- 새로운 branch를 생성하고 변경 : git switch -c branch_name
-- branch 삭제 : git branch -d branch_name
+## 🧩 Git이란?
+
+- **버전 관리 / 형상 관리 시스템**
+- SCM(Source Code Management)의 대표 도구
+- 로컬과 원격 저장소를 모두 지원하여 오프라인 작업도 가능
+
+---
+
+## ⚖️ SVN vs Git
+
+| 구분 | Git | SVN (Subversion) |
+|------|-----|-----------------|
+| 저장소 위치 | 로컬 + 원격 | 원격만 |
+| 오프라인 작업 | ✅ 가능 | ❌ 불가능 |
+| 속도 | 빠름 | 상대적으로 느림 |
+
+---
+
+## ⚙️ 초기 설정
+
+```bash
+# 사용자 이름 설정
+git config --global user.name "사용자 이름"
+
+# 사용자 이메일 설정
+git config --global user.email "이메일 주소"
+
+# 맥에서 한글 파일명 인식 문제 해결
+git config --global core.precomposeunicode true
+
+# 한글 깨짐 방지
+git config --global core.quotepath false
+
+# 설정 확인
+git config --list
+
+# 현재 폴더를 Git 로컬 저장소로 초기화
+git init
+```
+
+---
+
+## 📄 파일 상태
+
+```bash
+git status  # 현재 저장소의 상태 확인
+```
+
+| 상태 | 설명 |
+|------|------|
+| `Untracked` | 새로 생성되거나 Git이 추적하지 않는 파일 |
+| `Unmodified` | 수정되지 않은 파일 |
+| `Modified` | 수정된 파일 |
+| `Staged` | `git add`로 스테이징된 파일 |
+
+---
+
+## 📦 파일 등록 & 커밋
+
+```bash
+# 특정 파일을 Staging Area에 추가
+git add <파일명>
+
+# 현재 폴더의 모든 파일 추가
+git add -A
+git add .
+
+# 커밋 생성
+git commit -m "커밋 메시지"
+
+# add + commit 동시에 (Untracked 파일 없을 때만)
+git commit -am "커밋 메시지"
+
+# 커밋 내역 확인
+git log
+git log --oneline
+git log --oneline --graph
+```
+
+---
+
+## 🔄 커밋 이동 & 되돌리기
+
+```bash
+# 특정 커밋으로 이동 (커밋 ID 앞 7자리)
+git checkout 6ef2a23
+
+# 최신 커밋으로 이동
+git checkout <branch_name>
+
+# 해당 커밋으로 리셋 (이후 커밋 삭제)
+git reset --hard 6ef2a23
+
+# 특정 커밋만 되돌리기 (이력 유지)
+git revert 6ef2a23
+```
+
+> ⚠️ `reset --hard`는 이후 커밋이 삭제되므로 주의하여 사용하세요.
+
+---
+
+## 🌿 브랜치 관리
+
+```bash
+# 브랜치 목록 확인
+git branch
+
+# 새 브랜치 생성
+git branch <branch_name>
+
+# 브랜치 전환
+git checkout <branch_name>
+git switch <branch_name>
+
+# 새 브랜치 생성 + 전환
+git switch -c <branch_name>
+
+# 브랜치 삭제
+git branch -d <branch_name>
+```
+
+---
+
+## 🔀 Merge & Rebase
 
 ### Merge
-- 현재 branch에 특정 branch merge : git merge branch_name
-- fast-forward merge : main의 head를 새로운 branch로 옮기는 방법
-- 3-way merge : 각각 main과 branch에 변화가 생겨서 둘을 merge하는 방법
+
+```bash
+git merge <branch_name>
+```
+
+| 방식 | 설명 |
+|------|------|
+| **Fast-forward** | main의 HEAD를 새 브랜치로 이동 (직선형 이력) |
+| **3-way merge** | main과 branch 모두 변경된 경우 새 머지 커밋 생성 |
 
 ### Rebase
-- 현재 branch에 특정 branch merge : git rebase branch_name
-- fast-forward merge 모양으로 merge함 (그래프가 간결해짐)
 
-### 원격 저장소 생성
-- ssh key 생성 : ssh-keygen
-- 새로운 원격저장소를 origin이름으로 추가 : git remote add origin https://github.com... .git
-- master branch명을 main으로 변경 : git branch -M main
-- origin 원격저장소의 main branch에 push : git push -u origin main
-- 원격저장소와 local의 상태를 일치시킴 : git pull
-- github에 있는 저장소를 clone(main branch) : git clone git주소
-- github에 있는 저장소를 clone(원하는 branch) : git clone -b branch_name git주소
-- 리모트에 있는 branch도 보여줌 : git branch -a
+```bash
+git rebase <branch_name>
+```
 
-### 기타 터미널 명령어
-- pwd : 현재 디렉토리 확인
-- cd ~ : 홈 이동
-- cd (디렉토리) : 디렉토리 이동
-- ls -al : 현재 디렉토리 내 파일 리스트 확인
-- mkdir : 새 디렉토리(폴더) 생성
-- echo : 메아리, 터미널에 출력, 파일에 텍스트 작성 등
+> Fast-forward 형태로 이력을 정리하여 **커밋 그래프를 깔끔하게** 유지합니다.
 
-### Revert, Merge할 때 Conflict 상황 대처
-- 메세지를 남기라고 뜰 때:
-    - i키 누르기 (insert Mode로 변경)
-    - 병합 메세지 입력
-    - esc키 누르기
-    - :wq 입력
-    - enter키 누르기
+---
 
-### 깃허브 책
-- fork : branch랑 다른 개념, 개별 원격 저장소(원본 저장소에 풀리퀘 가능)
-- tag : 버전 태그용
-- amend : 마지막으로 커밋된 내용 수정하기
-- cherry-pick : 커밋 하나만 떼서 다른 branch에 붙이기 (새로운 커밋으로 복사됨)
-- stash : 잠시 변경사항을 임시저장하고 나중에 꺼내쓰기 (임시저장은 커밋으로 생성하지 않음)
-- fetch : pull처럼 커밋을 반영하지 않고 불러오기만 하기
+## ☁️ 원격 저장소
 
-### Git Ignore
-- gitignore.io : 깃 이그노어 편의 사이트
+```bash
+# SSH 키 생성
+ssh-keygen
 
-### Git GUI Tools
-- GitHub Desktop
-- Source Tree
+# 원격 저장소 추가
+git remote add origin https://github.com/.../.git
+
+# 브랜치명 변경 (master → main)
+git branch -M main
+
+# 원격 저장소에 push
+git push -u origin main
+
+# 원격 저장소와 동기화
+git pull
+
+# 저장소 클론 (main 브랜치)
+git clone <git주소>
+
+# 특정 브랜치 클론
+git clone -b <branch_name> <git주소>
+
+# 원격 브랜치 포함 전체 브랜치 확인
+git branch -a
+```
+
+---
+
+## ⚡ 충돌(Conflict) 대처
+
+Revert 또는 Merge 시 충돌이 발생하면 vim 편집기가 열립니다:
+
+```
+1. i 키 → Insert Mode 진입
+2. 병합 메시지 입력
+3. ESC 키 누르기
+4. :wq 입력 후 Enter
+```
+
+---
+
+## 🛠️ 고급 기능
+
+| 기능 | 설명 |
+|------|------|
+| `fork` | 원본 저장소를 개인 원격 저장소로 복사 (Pull Request 가능) |
+| `tag` | 특정 커밋에 버전 태그 부여 |
+| `amend` | 마지막 커밋 내용 수정 |
+| `cherry-pick` | 특정 커밋만 선택해 다른 브랜치에 적용 |
+| `stash` | 변경사항을 임시 저장하고 나중에 꺼내기 |
+| `fetch` | 원격 커밋을 가져오되 로컬에 반영하지 않음 |
+
+---
+
+## 🙈 Git Ignore
+
+불필요한 파일을 Git 추적에서 제외합니다.
+
+- 편의 사이트: [gitignore.io](https://www.toptal.com/developers/gitignore)
+- `.gitignore` 파일에 무시할 파일/폴더 패턴을 작성
+
+---
+
+## 🖥️ GUI 툴
+
+| 툴 | 설명 |
+|----|------|
+| [GitHub Desktop](https://desktop.github.com/) | GitHub 공식 GUI 클라이언트 |
+| [Sourcetree](https://www.sourcetreeapp.com/) | Atlassian의 강력한 Git GUI 툴 |
+
+---
+
+## 💻 터미널 기본 명령어
+
+| 명령어 | 설명 |
+|--------|------|
+| `pwd` | 현재 디렉토리 경로 확인 |
+| `cd ~` | 홈 디렉토리로 이동 |
+| `cd ..` | 상위 디렉토리로 이동 |
+| `cd <디렉토리>` | 해당 디렉토리로 이동 |
+| `ls -al` | 현재 디렉토리 파일 목록 확인 |
+| `mkdir <이름>` | 새 디렉토리 생성 |
+| `echo` | 터미널에 출력 또는 파일에 텍스트 작성 |
+
+---
+
+## 📚 참고 자료
+
+- [공식 Git 문서](https://git-scm.com/doc)
+- [GitHub Docs](https://docs.github.com/)
+- [Pro Git Book (무료 전자책)](https://git-scm.com/book/ko/v2)
